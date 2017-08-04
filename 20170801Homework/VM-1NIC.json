@@ -43,7 +43,7 @@
                 },
                 "subnets":[
                     {
-                        "name": "xuhuanSubnet1",
+                        "name": "xuhuanSubnet",
                         "properties":{
                             "addressPrefix": "10.0.0.0/24"
                         }
@@ -68,7 +68,7 @@
                         "properties":{
                             "privateIPAllocationMethod":"Dynamic",
                             "publicIPAddress":{
-                                "id":"[resourceId('Microsoft.Network/publicIPAddresses','xuhuanPublicIPAddress')]"
+                                "id":"[resourceId('Microsoft.Network/publicIPAddresses','xuhuanIP')]"
                             },
                             "subnet":{
                                 "id": "[variables('subnetRef')]"
@@ -110,7 +110,7 @@
                 "networkProfile":{
                     "networkInterfaces":[
                         {
-                            "id":"[resourceId('Microsoft.Network/networkInterfaces','myNic')]"
+                            "id":"[resourceId('Microsoft.Network/networkInterfaces','xuhuanNic')]"
                         }
                     ]
                     
