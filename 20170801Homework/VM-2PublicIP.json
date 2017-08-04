@@ -3,6 +3,9 @@
     "contentVersion":"1.0.0.0",
 
     "parameters":{
+        "VMname":{
+            "type": "string"
+        },
         "adminUsername":{
             "type":"string"
         },
@@ -165,7 +168,7 @@
             "properties": {
                 "hardwareProfile":{"vmSize":"Standard_A3"},
                 "osProfile":{
-                    "computerName": "xuhuanVM",
+                    "computerName": "[parameters('VMname')]",
                     "adminUsername": "[parameters('adminUsername')]",
                     "adminPassword": "[parameters('adminPassword')]"
                 },
