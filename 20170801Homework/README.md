@@ -1,9 +1,12 @@
 #Virtual Machine Creation with Multi NICs
 
-One-NIC Virtual Machine Creation using One Subnets
+
 <a href="https://portal.azure.cn/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fcathyhxz%2Fazure-quickstart-templates%2Fmaster%2F20170801Homework%2FVM-1NIC.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
+
+One-NIC Virtual Machine Creation using One Subnets
+
 
 Multi-NIC Virtual Machine Creation using Two Subnets
 <a href="https://portal.azure.cn/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fcathyhxz%2Fazure-quickstart-templates%2Fmaster%2F20170801Homework%2FVM-2NICs.json" target="_blank">
