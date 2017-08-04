@@ -1,0 +1,201 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion":"1.0.0.0",
+
+    "parameters":{
+        "adminUsername":{
+            "type":"string"
+        },
+        "adminPassword":{
+            "type":"securestring"
+        }
+    },
+
+    "variables":{
+        "vnetID":"[resourceId('Microsoft.Network/virtualNetworks','xuhuanVNet')]",
+        "subnetRef1":"[concat(variables('vnetID'),'/subnets/xuhuanSubnet1')]",
+        "subnetRef2":"[concat(variables('vnetID'),'/subnets/xuhuanSubnet2')]"
+    },
+
+    "resources":[
+//publicIP1
+        {
+            "type":"Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2017-06-01",
+            "name":"xuhuanIP1",
+            "location":"[resourceGroup().location]",
+            "properties": {
+                "publicIPAllocationMethod":"Dynamic"
+            }
+        },
+//publicIP2
+        {
+            "type":"Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2017-06-01",
+            "name":"xuhuanIP2",
+            "location":"[resourceGroup().location]",
+            "properties": {
+                "publicIPAllocationMethod":"Dynamic"
+            }
+        },
+//VNET
+        {
+            "apiVersion": "2017-06-01",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "xuhuanVNet",
+            "location":"[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups/', 'xuhuanNSG')]"
+            ],
+            "properties":{
+                "addressSpace":{
+                    "addressPrefixes":["10.0.0.0/16"]
+                },
+                "subnets":[
+                    {
+                        "name": "xuhuanSubnet1",
+                        "properties":{
+                            "networkSecurityGroup": {
+                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'xuhuanNSG')]"
+                            },
+                            "addressPrefix": "10.0.0.0/24"
+                        }
+                    },
+                    {
+                        "name": "xuhuanSubnet2",
+                        "properties":{
+                            "networkSecurityGroup": {
+                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'xuhuanNSG')]"
+                            },
+                            "addressPrefix": "10.0.1.0/24"
+                        }
+                    }
+                ]
+            }
+        },
+//NSG
+        {
+            "apiVersion": "2017-06-01",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "xuhuanNSG",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "rdp-rule",
+                        "properties": {
+                            "description": "Allow RDP",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "3389",
+                            "sourceAddressPrefix": "Internet",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 100,
+                            "direction": "Inbound"
+                        }
+                    }
+                ]
+            }
+        },
+//NIC1
+        {
+            "apiVersion": "2017-06-01",
+            "type":"Microsoft.Network/networkInterfaces",
+            "name":"xuhuanNic1",
+            "location":"[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses/', 'xuhuanIP1')]",
+                "[resourceId('Microsoft.Network/virtualNetworks/', 'xuhuanVnet')]"
+            ],
+            "properties":{
+                "ipConfigurations":[
+                    {
+                        "name": "ipconfig1",
+                        "properties":{
+                            "privateIPAllocationMethod":"Dynamic",
+                            "publicIPAddress":{
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses','xuhuanIP1')]"
+                            },
+                            "subnet":{
+                                "id": "[variables('subnetRef1')]"
+                            }
+                        }
+                    }       
+                ]
+            }
+        },
+//NIC2
+        {
+            "apiVersion": "2017-06-01",
+            "type":"Microsoft.Network/networkInterfaces",
+            "name":"xuhuanNic2",
+            "location":"[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses/', 'xuhuanIP2')]",
+                "[resourceId('Microsoft.Network/virtualNetworks/', 'xuhuanVnet')]"
+            ],
+            "properties":{
+                "ipConfigurations":[
+                    {
+                        "name": "ipconfig2",
+                        "properties":{
+                            "privateIPAllocationMethod":"Dynamic",
+                            "publicIPAddress":{
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses','xuhuanIP2')]"
+                            },
+                            "subnet":{
+                                "id": "[variables('subnetRef2')]"
+                            }
+                        }
+                    }       
+                ]
+            }
+        },
+//VM
+        {
+            "apiVersion": "2017-03-30",
+            "type":"Microsoft.Compute/virtualMachines",
+            "name": "xuhuanVM",
+            "location":"[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkInterfaces/','xuhuanNic1')]",
+                "[resourceId('Microsoft.Network/networkInterfaces/','xuhuanNic2')]"
+            ],
+            "properties": {
+                "hardwareProfile":{"vmSize":"Standard_A3"},
+                "osProfile":{
+                    "computerName": "xuhuanVM",
+                    "adminUsername": "[parameters('adminUsername')]",
+                    "adminPassword": "[parameters('adminPassword')]"
+                },
+                "storageProfile":{
+                    "imageReference":{
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "2012-R2-Datacenter",
+                        "version": "latest"
+                    },
+                    "osDisk":{
+                        "name":"xuhuanOSDisk",
+                        "caching":"ReadWrite",
+                        "createOption":"FromImage"
+                    }      
+                },
+                "networkProfile":{
+                    "networkInterfaces":[
+                        {
+                            "id":"[resourceId('Microsoft.Network/networkInterfaces','xuhuanNic1')]",
+                            "properties": { "primary": true }
+                        },
+                        {
+                            "id":"[resourceId('Microsoft.Network/networkInterfaces','xuhuanNic2')]",
+                            "properties": { "primary": false }
+                        }
+                    ]
+                    
+                } 
+            }
+        }
+    ]
+}
