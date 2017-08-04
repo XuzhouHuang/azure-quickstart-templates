@@ -99,9 +99,8 @@
                         "version": "latest"
                     },
                     "osDisk":{
-                        "name":"xuhuanOSDisk",
                         "caching":"ReadWrite",
-                        "createOperation":"FromImage"
+                        "createOption":"FromImage"
                     }      
                 },
                 "networkProfile":{
