@@ -13,8 +13,8 @@
     },
 
     "variables":{
-        "vnetID":"[resourceId('Microsoft.Network/virtualNetworks','myVNet')]",
-        "subnetRef":"[concat(variables('vnetID'),'/subnets/mySubnet')]"
+        "vnetID":"[resourceId('Microsoft.Network/virtualNetworks','xuhuanVNet')]",
+        "subnetRef":"[concat(variables('vnetID'),'/subnets/xuhuanSubnet')]"
     },
 
     "resources":[
@@ -85,7 +85,7 @@
             "name": "xuhuanVM",
             "location":"[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/networkInterface/','xuhuanNic')]"
+                "[resourceId('Microsoft.Network/networkInterfaces/','xuhuanNic')]"
             ],
             "properties": {
                 "hardwareProfile":{"vmSize":"Standard_A3"},
@@ -99,9 +99,10 @@
                         "publisher": "MicrosoftWindowsServer",
                         "offer": "WindowsServer",
                         "sku": "2012-R2-Datacenter",
-                        "version": "4.0.201503"
+                        "version": "latest"
                     },
                     "osDisk":{
+                        "name":"xuhuanOSDisk",
                         "caching":"ReadWrite",
                         "createOperation":"FromImage"
                     }      
