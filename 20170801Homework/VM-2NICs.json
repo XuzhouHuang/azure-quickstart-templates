@@ -34,6 +34,9 @@
             "type": "Microsoft.Network/virtualNetworks",
             "name": "xuhuanVNet",
             "location":"[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups/', 'xuhuanNSG')]"
+            ],
             "properties":{
                 "addressSpace":{
                     "addressPrefixes":["10.0.0.0/16"]
@@ -42,12 +45,18 @@
                     {
                         "name": "xuhuanSubnet1",
                         "properties":{
+                            "networkSecurityGroup": {
+                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'xuhuanNSG')]"
+                            },
                             "addressPrefix": "10.0.0.0/24"
                         }
                     },
                     {
                         "name": "xuhuanSubnet2",
                         "properties":{
+                            "networkSecurityGroup": {
+                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'xuhuanNSG')]"
+                            },
                             "addressPrefix": "10.0.1.0/24"
                         }
                     }
@@ -86,7 +95,6 @@
             "name":"xuhuanNic1",
             "location":"[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/networkSecurityGroups/', 'xuhuanNSG')]",
                 "[resourceId('Microsoft.Network/publicIPAddresses/', 'xuhuanIP')]",
                 "[resourceId('Microsoft.Network/virtualNetworks/', 'xuhuanVnet')]"
             ],
@@ -95,9 +103,6 @@
                     {
                         "name": "ipconfig1",
                         "properties":{
-                            "networkSecurityGroup": {
-                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'xuhuanNSG')]"
-                            },
                             "privateIPAllocationMethod":"Dynamic",
                             "publicIPAddress":{
                                 "id": "[resourceId('Microsoft.Network/publicIPAddresses','xuhuanIP')]"
@@ -117,7 +122,6 @@
             "name":"xuhuanNic2",
             "location":"[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/networkSecurityGroups/', 'xuhuanNSG')]",
                 "[resourceId('Microsoft.Network/publicIPAddresses/', 'xuhuanIP')]",
                 "[resourceId('Microsoft.Network/virtualNetworks/', 'xuhuanVnet')]"
             ],
@@ -126,9 +130,6 @@
                     {
                         "name": "ipconfig2",
                         "properties":{
-                            "networkSecurityGroup": {
-                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'xuhuanNSG')]"
-                            },
                             "privateIPAllocationMethod":"Dynamic",
                             "subnet":{
                                 "id": "[variables('subnetRef2')]"
