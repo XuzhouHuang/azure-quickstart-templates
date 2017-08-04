@@ -63,7 +63,7 @@
             "location":"[resourceGroup().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/publicIPAddresses/', 'xuhuanIP')]",
-                "[resourceId('Microsoft.Network/virtualNetworks/', 'xuhuanVNET')]"
+                "[resourceId('Microsoft.Network/virtualNetworks/', 'xuhuanVnet')]"
             ],
             "properties":{
                 "ipConfigurations":[
@@ -71,9 +71,6 @@
                         "name": "ipconfig1",
                         "properties":{
                             "privateIPAllocationMethod":"Dynamic",
-                            "publicIPAddress":{
-                                "id":"[resourceId('Microsoft.Network/publicIPAddresses','xuhuanIP')]"
-                            },
                             "subnet":{
                                 "id": "[variables('subnetRef1')]"
                             }
@@ -98,9 +95,6 @@
                         "name": "ipconfig2",
                         "properties":{
                             "privateIPAllocationMethod":"Dynamic",
-                            "publicIPAddress":{
-                                "id":"[resourceId('Microsoft.Network/publicIPAddresses','xuhuanIP')]"
-                            },
                             "subnet":{
                                 "id": "[variables('subnetRef2')]"
                             }
@@ -142,10 +136,12 @@
                 "networkProfile":{
                     "networkInterfaces":[
                         {
-                            "id":"[resourceId('Microsoft.Network/networkInterfaces','xuhuanNic1')]"
+                            "id":"[resourceId('Microsoft.Network/networkInterfaces','xuhuanNic1')]",
+                            "properties": { "primary": true }
                         },
                         {
-                            "id":"[resourceId('Microsoft.Network/networkInterfaces','xuhuanNic2')]"
+                            "id":"[resourceId('Microsoft.Network/networkInterfaces','xuhuanNic2')]",
+                            "properties": { "primary": false }
                         }
                     ]
                     
