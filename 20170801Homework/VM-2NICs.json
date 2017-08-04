@@ -39,7 +39,7 @@
                 "[resourceId('Microsoft.Network/networkSecurityGroups/', 'xuhuanNSG')]"
             ],
             "properties":{
-                "networkSecurityGroup": {
+                "networkSecurityGroups": {
                     "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'xuhuanNSG')]"
                 },
                 "addressSpace":{
