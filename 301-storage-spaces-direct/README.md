@@ -13,7 +13,7 @@ To deploy the required Azure VNET and Active Directory infrastructure, if not al
 
 Click the button below to deploy from the portal:
 
-<a href="https://portal.azure.cn/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fcathyhxz%2Fazure-quickstart-templates%2Fmaster%2F301-storage-spaces-direct/azuredeploy.json" target="_blank">
+<a href="https://portal.azure.cn/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fcathyhxz%2Fazure-quickstart-templates%2Fmaster%2F301-storage-spaces-direct%2Fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 <a href="https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-quickstart-templates%2Fmaster%2F301-storage-spaces-direct%2Fazuredeploy.json" target="_blank">
